@@ -8,3 +8,6 @@ Rühma liikmed: [Ken Aonurm](https://github.com/Ken299), [Jaagup Siil](https://g
 *Erinevalt teistest samalaadsetest saaksid iga kooli õpilased kasutada e-päevikut, mitte ainult kindlate koolide õpilased.
 
 *Eeskujuks on E-kool, mida Tallinna Ülikool ei kasuta.
+
+Edmodo.com
+Stuudium.ee
