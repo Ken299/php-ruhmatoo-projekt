@@ -2,7 +2,7 @@
 	 //ühenduse loomiseks kasuta
 	require_once("../config.php");
 	$database = "if15_kenaon";
-	$mysqli = new mysqli($servername, $username, $password, $database);
+	$mysqli = new mysqli($servername, $server_username, $server_password, $database);
 	
 	// funktsioon, mis eemaldab kõikvõimaliku üleliigse tekstist
 	function cleanInput($data) { 
