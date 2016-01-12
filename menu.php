@@ -1,5 +1,5 @@
 <?php
-	//require_once("functions.php");
+	require_once("functions.php");
 ?>
 <h3>Menüü</h3>
 <?php
@@ -7,6 +7,14 @@
 	{?>
 		<input type=button onClick="location.href='?logout=1'" value='Logi välja'>
 		<?php
+	}
+	if(isset($_GET["logout"])){
+		//aadressireal on olemas muutuja logout
+		
+		//kustutame kõik session muutujad ja peatame sessiooni
+		session_destroy();
+		
+		header("Location: login.php");
 	}
 		
 ?>
@@ -53,16 +61,16 @@
 	}	
 	?>
 	
-	<?php /*
+	<?php 
 	if(isset($_SESSION["logged_in_user_id"]))
 	{
-		if ($file_name == "ylesanded.php"){ 
+		if ($file_name == "select.php"){ 
 		
-			echo "<li>Ülesanded</li>";
+			echo "<li>Vali ained</li>";
 		
 		}else{
 			
-			echo '<li><a href="ylesanded.php">Ülesanded</a></li>';
+			echo '<li><a href="select.php">Vali ained</a></li>';
 		}
 	}
 	else
@@ -70,7 +78,7 @@
 		echo "";
 	}
 	?>
-	<?php 
+	<?php /*
 	if(isset($_SESSION["logged_in_user_id"]))
 	{
 		if ($file_name == "data.php"){ 

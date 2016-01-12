@@ -10,9 +10,9 @@
 	function loginUser($email, $password_hash){
 		$mysqli = new mysqli($GLOBALS["servername"], $GLOBALS["server_username"], $GLOBALS["server_password"], $GLOBALS["database"]);		
 		
-		$stmt = $mysqli->prepare("SELECT userid, email FROM user_accounts WHERE email=? AND password=?");
+		$stmt = $mysqli->prepare("SELECT userid, email, selected FROM user_accounts WHERE email=? AND password=?");
 		$stmt->bind_param("ss", $email, $password_hash);
-		$stmt->bind_result($id_from_db, $email_from_db);
+		$stmt->bind_result($id_from_db, $email_from_db, $selected_from_db);
 		$stmt->execute();
 		if($stmt->fetch()){
 			// ab'i oli midagi
@@ -22,9 +22,14 @@
 			$_SESSION["logged_in_user_id"] = $id_from_db;
 			$_SESSION["logged_in_user_email"] = $email_from_db;
 			
-			//suunan data.php lehele
-			header("Location: home.php");
-			
+			if($selected_from_db == 1)
+			{	
+				header("Location: home.php");
+			}
+			else
+			{
+				header("Location: select.php");
+			}
 		}else{
 			// ei leidnud
 			echo "Wrong credentials!";
@@ -32,5 +37,26 @@
 		$stmt->close();
 		
 		$mysqli->close();
+	}
+	function addLecture($subject){
+		
+		$mysqli = new mysqli($GLOBALS["servername"], $GLOBALS["server_username"], $GLOBALS["server_password"], $GLOBALS["database"]);
+	
+		$stmt = $mysqli->prepare("INSERT INTO lecture_ids (lectureid, userid) VALUES (?, ?)");
+		$stmt->bind_param("si", $subject, $_SESSION["logged_in_user_id"]);
+		
+		$message ="";
+		
+		if($stmt->execute()){
+			// see on tõene siis kui sisestus ab õnnestus
+			$message = "Edukalt sisestatud andmebaasi";
+		}else{
+			//execute on false, miski on katki
+			echo $stmt->error;
+		}
+		$stmt->close();
+		$mysqli->close();
+		
+		return $message;
 	}
 ?>

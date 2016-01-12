@@ -67,45 +67,11 @@
 				$password_hash = hash("sha512", $password);
 				// kasutaja sisselogimise fn, failist functions.php
 				loginUser($email, $password_hash);
-				//$stmt = $mysqli->prepare("SELECT id, email FROM kontod32 WHERE email=? AND password=?");
-				//$stmt->bind_param("ss", $email, $password_hash);
-				
-				//paneme vastuse muutujatesse
-				//$stmt->bind_result($id_from_db, $email_from_db);
-				//$stmt->execute();
-				
-				//if($stmt->fetch()){
-					//leidis
-					//echo "<br>";
-					//echo"Kasutaja id=".$id_from_db;
-				//}else{
-					//tühi, ei leidnud, ju siis midagi valesti
-					//echo "<br>";
-					//echo "Wrong password or email!";
-					
 				}
 				
-				//$stmt->close();
 			}
-		//} elseif(isset($_POST["create"])){
-		
-			// ********************
-			// *** CREATE NUPP ****
-			// ********************
-			
-			// kas e-post on tühi
-		//	if( empty($_POST["name"]) ) {
-				
-				// jah oli tühi
-			//	$name_error = "See väli on kohustuslik";
-				
-	//		}
-		
-		
 		}
 		
-	//Paneme ühenduse kinni
-	//$mysqli->close();
 ?>
 <?php
 	$page_title = "Login leht";
