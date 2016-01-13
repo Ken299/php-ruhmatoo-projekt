@@ -23,7 +23,6 @@
 		<th>Aine kood</th>
 		<th>Aine nimetus</th>
 		<th>Õppejõud</th>
-
 	</tr>
 	
 	<?php

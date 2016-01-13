@@ -57,32 +57,72 @@
 	function lectures(){
 		
 		$mysqli = new mysqli($GLOBALS["servername"], $GLOBALS["server_username"], $GLOBALS["server_password"], $GLOBALS["database"]);
-		$stmt = $mysqli->prepare("SELECT lectureid, lectures.title, teachers.name FROM lecture_ids JOIN lectures ON lectures.code=lecture_ids.lectureid JOIN teachers ON teachers.lecturecode=lectures.code WHERE userid =?");
+		$stmt = $mysqli->prepare("SELECT access FROM user_accounts WHERE userid =?");
 		$stmt->bind_param("i", $_SESSION["logged_in_user_id"]);
-		$stmt->bind_result($lectureid, $title, $teacher);
+		$stmt->bind_result($access);
 		$stmt->execute();
-		//tühi massiiv kus hoiame objekte( 1 rida andmeid)
-		$array = array();
-		
-		//tee tsüklit nii mitu korda, kui saad ab'st ühe rea andmeid
-		while($stmt->fetch())
+		if($access ==1)
 		{
-		
-			//loon objekti
-			$tasks = new stdClass();
-			$tasks->lectureid = $lectureid;
-			$tasks->title= $title;
-			$tasks->teacher= $teacher;
-			//lisame selle massiivi
-			array_push($array, $tasks);
-			//echo "<pre>";
-			//var_dump($array);
-			//echo "</pre>";
+			$mysqli = new mysqli($GLOBALS["servername"], $GLOBALS["server_username"], $GLOBALS["server_password"], $GLOBALS["database"]);
+			$stmt = $mysqli->prepare("SELECT lectureid, lectures.title FROM lecture_ids JOIN lectures ON lectures.code=lecture_ids.lectureid WHERE userid =?");
+			$stmt->bind_param("i", $_SESSION["logged_in_user_id"]);
+			$stmt->bind_result($lectureid, $title);
+			$stmt->execute();
+			//tühi massiiv kus hoiame objekte( 1 rida andmeid)
+			$array = array();
 			
+			//tee tsüklit nii mitu korda, kui saad ab'st ühe rea andmeid
+			while($stmt->fetch())
+			{
+			
+				//loon objekti
+				$tasks = new stdClass();
+				$tasks->lectureid = $lectureid;
+				$tasks->title= $title;
+				//lisame selle massiivi
+				array_push($array, $tasks);
+				//echo "<pre>";
+				//var_dump($array);
+				//echo "</pre>";
+				
+			}
+			$stmt->close();
+			$mysqli->close();
+			
+			return $array;
 		}
-		$stmt->close();
-		$mysqli->close();
-		
-		return $array;
+		else
+		{
+			echo $access;
+			echo "Kakakaka";
+			/*$mysqli = new mysqli($GLOBALS["servername"], $GLOBALS["server_username"], $GLOBALS["server_password"], $GLOBALS["database"]);
+			$stmt = $mysqli->prepare("SELECT lectureid, lectures.title, lectures.teacher FROM lecture_ids JOIN lectures ON lectures.code=lecture_ids.lectureid WHERE userid =?");
+			$stmt->bind_param("i", $_SESSION["logged_in_user_id"]);
+			$stmt->bind_result($lectureid, $title, $teacher);
+			$stmt->execute();
+			//tühi massiiv kus hoiame objekte( 1 rida andmeid)
+			$array = array();
+			
+			//tee tsüklit nii mitu korda, kui saad ab'st ühe rea andmeid
+			while($stmt->fetch())
+			{
+			
+				//loon objekti
+				$tasks = new stdClass();
+				$tasks->lectureid = $lectureid;
+				$tasks->title= $title;
+				$tasks->teacher= $teacher;
+				//lisame selle massiivi
+				array_push($array, $tasks);
+				//echo "<pre>";
+				//var_dump($array);
+				//echo "</pre>";
+				
+			}
+			$stmt->close();
+			$mysqli->close();
+			
+			return $array;*/
+		}
 	}
 ?>
