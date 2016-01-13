@@ -10,11 +10,12 @@
 	function loginUser($email, $password_hash){
 		$mysqli = new mysqli($GLOBALS["servername"], $GLOBALS["server_username"], $GLOBALS["server_password"], $GLOBALS["database"]);		
 		
-		$stmt = $mysqli->prepare("SELECT userid, email, selected FROM user_accounts WHERE email=? AND password=?");
+		$stmt = $mysqli->prepare("SELECT userid, email FROM user_accounts WHERE email=? AND password=?");
 		$stmt->bind_param("ss", $email, $password_hash);
-		$stmt->bind_result($id_from_db, $email_from_db, $selected_from_db);
+		$stmt->bind_result($id_from_db, $email_from_db);
 		$stmt->execute();
-		if($stmt->fetch()){
+		if($stmt->fetch())
+		{
 			// ab'i oli midagi
 			echo "Email ja parool õiged, kasutaja id=".$id_from_db;
 			
@@ -22,14 +23,8 @@
 			$_SESSION["logged_in_user_id"] = $id_from_db;
 			$_SESSION["logged_in_user_email"] = $email_from_db;
 			
-			if($selected_from_db == 1)
-			{	
-				header("Location: home.php");
-			}
-			else
-			{
-				header("Location: select.php");
-			}
+			header("Location: home.php");
+			
 		}else{
 			// ei leidnud
 			echo "Wrong credentials!";
@@ -58,5 +53,36 @@
 		$mysqli->close();
 		
 		return $message;
+	}
+	function lectures(){
+		
+		$mysqli = new mysqli($GLOBALS["servername"], $GLOBALS["server_username"], $GLOBALS["server_password"], $GLOBALS["database"]);
+		$stmt = $mysqli->prepare("SELECT lectureid, lectures.title, teachers.name FROM lecture_ids JOIN lectures ON lectures.code=lecture_ids.lectureid JOIN teachers ON teachers.lecturecode=lectures.code WHERE userid =?");
+		$stmt->bind_param("i", $_SESSION["logged_in_user_id"]);
+		$stmt->bind_result($lectureid, $title, $teacher);
+		$stmt->execute();
+		//tühi massiiv kus hoiame objekte( 1 rida andmeid)
+		$array = array();
+		
+		//tee tsüklit nii mitu korda, kui saad ab'st ühe rea andmeid
+		while($stmt->fetch())
+		{
+		
+			//loon objekti
+			$tasks = new stdClass();
+			$tasks->lectureid = $lectureid;
+			$tasks->title= $title;
+			$tasks->teacher= $teacher;
+			//lisame selle massiivi
+			array_push($array, $tasks);
+			//echo "<pre>";
+			//var_dump($array);
+			//echo "</pre>";
+			
+		}
+		$stmt->close();
+		$mysqli->close();
+		
+		return $array;
 	}
 ?>

@@ -78,22 +78,22 @@
 		echo "";
 	}
 	?>
-	<?php /*
+	<?php 
 	if(isset($_SESSION["logged_in_user_id"]))
 	{
-		if ($file_name == "data.php"){ 
+		if ($file_name == "lectures.php"){ 
 		
-			echo "<li>Numbrimärgid</li>";
+			echo "<li>Ained</li>";
 		
 		}else{
 			
-			echo '<li><a href="data.php">Numbrimärgid</a></li>';
+			echo '<li><a href="lectures.php">Ained</a></li>';
 		}
 	}
 	else
 	{
 		echo "";
-	}*/
+	}
 	?>
 	
 
